@@ -1,0 +1,33 @@
+EC2
+
+ 
+Сабнети: aws ec2 describe-subnets --output table  
+         (MapPublicIpOnLanuch - yes/no; yes - public; no - private)
+Інстанс: aws ec2 run-instances --image-id ami-032509850cf9ee54e --count 1 --instance-type t2.micro --key-name OregonMy --subnet-id subnet-0030a92730d89a4b1 --security-group-ids sg-09d27dc4112d5b46a --iam-instance-profile Name=S3Full_Access --tag-specifications 'ResourceType=instance,Tags=[{Key=Type,Value=backend}]'
+Опис:    aws ec2 describe-instances --instance-id <id> --output table
+Регіони: aws ec2 describe-regions --output table 
+
+
+
+
+S3
+
+Створення:       aws s3 mb s3://<bucket_name> 
+Ремув:           aws s3 rb s3://<bucketname> 
+Ліст:            aws s3 ls 
+Копіювати в бакет: aws s3 cp /path/to/file s3://<bucket_name>
+Копіювати файл між бакетами:  aws s3 sync /path/to/folder/ s3://<bucket_name> -exclude *.tmp
+Вміст бакета:    aws s3 ls s3://<bucket_name> 
+
+ACG
+
+aws autoscaling create-launch-configuration --launch-configuration-name demolauchconf --key-name OregonMy --image-id ami-0e32cd9fc07499bab --security-groups sg-0ac105927aa74f451 --instance-type t2.micro --iam-instance-profile S3Full_Access
+
+
+New ACG:                 aws autoscaling create-auto-scaling-group --auto-scaling-group-name myacg --launch-configuration-name demolauchconf --vpc-zone-identifier subnet-05970c59aa333a5ab --load-balancer-names MyLoadBalancer --min-size 0 --desired-capacity 1 --max-size 1 
+
+
+MariaDB
+mysql -h rds-instance-mysql.c7pe9rds7ekd.us-west-2.rds.amazonaws.com -P 3306 -u master -p
+
+show databases
